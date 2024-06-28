@@ -1,0 +1,96 @@
+.app {
+  display: flex;
+  justify-content: center;
+  .link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .container {
+    width: 90vw;
+    .auth {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      h1 {
+        font-weight: 200;
+        font-size: 50px;
+      }
+      form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid black;
+        margin: 0 auto;
+        line-height: 0.1em;
+        input {
+          width: 300px;
+          height: 30px;
+          text-align: center;
+          font-family: Arial, Helvetica, sans-serif;
+          outline: none;
+          border: none;
+          border-bottom: 1px solid black;
+          transition: border-color 0.3s;
+
+          &:focus {
+            border-bottom: 2px solid red;
+          }
+        }
+
+        button {
+          width: 100px;
+          height: 30px;
+          cursor: pointer;
+          background: teal;
+        }
+      }
+      p {
+        color: red;
+      }
+      a {
+        text-decoration: none;
+      }
+    }
+    //nav bar
+    .navbar {
+      height: 4em;
+      // background: green;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0px;
+
+        .logo {
+          .logo-text {
+            font-weight: 200;
+            font-size: 20px;
+          }
+        }
+        .links {
+          display: flex;
+          align-items: center;
+
+          gap: 10px;
+        }
+      }
+    }
+    footer{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
+}

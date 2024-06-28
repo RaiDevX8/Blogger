@@ -1,0 +1,182 @@
+/* App.scss (or your main SCSS file) */
+
+.app {
+  display: flex;
+  justify-content: center;
+
+  .link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .container {
+    width: 80vw;
+
+    /* Styles for authentication section */
+    .auth {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      h1 {
+        font-weight: 200;
+        font-size: 50px;
+      }
+
+      form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid black;
+        margin: 0 auto;
+        line-height: 0.1em;
+
+        input {
+          width: 300px;
+          height: 30px;
+          text-align: center;
+          font-family: Arial, Helvetica, sans-serif;
+          outline: none;
+          border: none;
+          border-bottom: 1px solid black;
+          transition: border-color 0.3s;
+
+          &:focus {
+            border-bottom: 2px solid red;
+          }
+        }
+
+        button {
+          width: 100px;
+          height: 30px;
+          cursor: pointer;
+          background: teal;
+        }
+      }
+
+      p {
+        color: red;
+      }
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+    /* Styles for navigation bar */
+    .navbar {
+      height: 4em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0px;
+
+        .logo {
+          .logo-text {
+            font-weight: 200;
+            font-size: 20px;
+          }
+        }
+
+        .links {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+      }
+    }
+
+    /* Styles for footer */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 12px;
+
+      img {
+        height: 50px;
+      }
+    }
+
+    /* Home.module.scss */
+
+    .home {
+      padding: 20px;
+    }
+
+    .post {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-gap: 20px;
+    }
+
+    .post-item {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      img {
+        width: 100%; /* Ensures image fills its parent container */
+        max-width: 100%; /* Limits image to the maximum available width */
+        height: auto; /* Allows image to maintain aspect ratio */
+        border-radius: 8px;
+        object-fit: cover; /* Ensures the image covers the entire container */
+      }
+
+      .content {
+        padding: 10px;
+
+        h1 {
+          font-size: 1.5rem;
+          margin-bottom: 10px;
+        }
+
+        p {
+          margin-bottom: 10px;
+        }
+
+        button {
+          padding: 8px 16px;
+          border: none;
+          background-color: #007bff;
+          border-radius: 20px;
+          color: white;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
+    }
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
