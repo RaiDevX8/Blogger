@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogger Website</title>
-</head>
-<body>
+
 
 <h1>Blogger Website</h1>
 
@@ -28,5 +21,5 @@
     <li><strong>Authentication:</strong> JWT (JSON Web Tokens)</li>
 </ul>
 
-</body>
+
 </html>
