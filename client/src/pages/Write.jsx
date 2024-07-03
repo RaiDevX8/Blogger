@@ -36,23 +36,35 @@ const Write = () => {
           </div>
         </div>
         <div className="item">
-          <input type="radio" name="cat" id="art" value="art" />
-          <label htmlFor="art">Art</label>
+          <h1>Category</h1>
+          <div className="cat">
+            <input type="radio" name="cat" id="art" value="art" />
+            <label htmlFor="art">Art</label>
+          </div>
+          <div className="cat">
+            <input type="radio" name="cat" id="science" value="science" />
+            <label htmlFor="science">Science</label>
+          </div>
 
-          <input type="radio" name="cat" id="science" value="science" />
-          <label htmlFor="science">Science</label>
+          <div className="cat">
+            <input type="radio" name="cat" id="technology" value="technology" />
+            <label htmlFor="technology">Technology</label>
+          </div>
 
-          <input type="radio" name="cat" id="technology" value="technology" />
-          <label htmlFor="technology">Technology</label>
+          <div className="cat">
+            <input type="radio" name="cat" id="cinema" value="cinema" />
+            <label htmlFor="cinema">Cinema</label>
+          </div>
 
-          <input type="radio" name="cat" id="cinema" value="cinema" />
-          <label htmlFor="cinema">Cinema</label>
+          <div className="cat">
+            <input type="radio" name="cat" id="design" value="design" />
+            <label htmlFor="design">Design</label>
+          </div>
 
-          <input type="radio" name="cat" id="design" value="design" />
-          <label htmlFor="design">Design</label>
-
-          <input type="radio" name="cat" id="food" value="food" />
-          <label htmlFor="food">Food</label>
+          <div className="cat">
+            <input type="radio" name="cat" id="food" value="food" />
+            <label htmlFor="food">Food</label>
+          </div>
         </div>
       </div>
     </div>
