@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -7,6 +8,8 @@ const Register = () => {
     email: '',
     password: '',
   })
+  const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
   const handleInputChange = e => {
     setInputs({ ...inputs, [e.target.name]: e.target.value })
@@ -16,14 +19,25 @@ const Register = () => {
     e.preventDefault()
     try {
       const res = await axios.post(
-        'http://localhost:3000/api/auth/register', // Corrected endpoint
+        'http://localhost:3000/api/auth/register',
         inputs
       )
+      navigate("/login")
       console.log('Registration Successful:', res.data)
-      // Optionally, redirect or show success message
+      setError(null) // Clear any previous error
     } catch (error) {
       console.error('Registration Error:', error)
-      // Handle error state or display error message
+      if (error.response) {
+        console.log('Error Response Data:', error.response.data)
+        console.log('Error Response Status:', error.response.status)
+        if (error.response.status === 409) {
+          setError('User already exists')
+        } else {
+          setError('An error occurred. Please try again.')
+        }
+      } else {
+        setError('An unexpected error occurred.')
+      }
     }
   }
 
@@ -57,6 +71,7 @@ const Register = () => {
         />
         <button type="submit">Register</button>
       </form>
+      {error && <p className="error">{error}</p>}
     </div>
   )
 }
