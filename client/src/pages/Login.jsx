@@ -1,47 +1,31 @@
-import React, { useContext, useState } from 'react'
-import '../style.scss'
-import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { AuthContext } from '../context/authContext.jsx'
+import React, { useState } from 'react'
+import { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
   const [inputs, setInputs] = useState({
     username: '',
     password: '',
   })
+  const [err, setError] = useState(null)
+
   const navigate = useNavigate()
-  const [error, setError] = useState(null)
 
-  const {login} = useContext(AuthContext)
-
-console.log(login);
-  const handleInputChange = e => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value })
+  const { login ,currentUser } = useContext(AuthContext)
+console.log(currentUser)
+  const handleChange = e => {
+    setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      const res = await axios.post(
-        'http://localhost:3000/api/auth/login',
-        inputs
-      )
+      await login(inputs)
       navigate('/')
-      console.log('Registration Successful:', res.data)
-      setError(null) // Clear any previous error
-    } catch (error) {
-      console.error('Registration Error:', error)
-      if (error.response) {
-        console.log('Error Response Data:', error.response.data)
-        console.log('Error Response Status:', error.response.status)
-        if (error.response.status === 409) {
-          setError('User already exists')
-        } else {
-          setError('An error occurred. Please try again.')
-        }
-      } else {
-        setError('An unexpected error occurred.')
-      }
+    } catch (err) {
+      setError(err.response.data)
     }
   }
   return (
@@ -53,19 +37,19 @@ console.log(login);
           type="text"
           placeholder="username"
           name="username"
-          onChange={handleInputChange}
+          onChange={handleChange}
         />
         <input
           required
           type="password"
           placeholder="password"
           name="password"
-          onChange={handleInputChange}
+          onChange={handleChange}
         />
         <button onClick={handleSubmit}>Login</button>
-        <p>{error}</p>
+        {err && <p>{err}</p>}
         <span>
-        Don't you have account? <Link to="/register">Register</Link>
+          Don't you have an account? <Link to="/register">Register</Link>
         </span>
       </form>
     </div>
