@@ -11,7 +11,7 @@ const Login = () => {
   })
   const [err, setError] = useState(null)
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { login ,currentUser } = useContext(AuthContext)
 console.log(currentUser)
