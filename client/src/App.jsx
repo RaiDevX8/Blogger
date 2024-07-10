@@ -1,12 +1,18 @@
-import React from 'react'
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
-import Footer from './components/Footer'
-import Navbar from './components/Navbar'
-import Home from './pages/Home'
-import Login from './pages/Login'
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Outlet,
+} from 'react-router-dom'
 import Register from './pages/Register'
-import Single from './pages/Single'
+import Login from './pages/Login'
 import Write from './pages/Write'
+import Home from './pages/Home'
+import Single from './pages/Single'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import './style.scss'
+
 const Layout = () => {
   return (
     <>
@@ -16,6 +22,7 @@ const Layout = () => {
     </>
   )
 }
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -45,13 +52,11 @@ const router = createBrowserRouter([
   },
 ])
 
-const App = () => {
+function App() {
   return (
-    <div>
-      <div className="app">
-        <div className="container">
-          <RouterProvider router={router} />
-        </div>
+    <div className="app">
+      <div className="container">
+        <RouterProvider router={router} />
       </div>
     </div>
   )
