@@ -1,56 +1,32 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import '../style.scss' // Import SCSS module
 
-const post = [
-  {
-    id: 1,
-    title: 'First Object',
-    description: 'Description of the first object.',
-    image:
-      'https://media.istockphoto.com/id/1151307397/vector/flat-cartoon-character.jpg?s=1024x1024&w=is&k=20&c=qBROYpbloa21JgZODjhjUlgo8SXTXliHfeoO1YrKqkg=',
-  },
-  {
-    id: 2,
-    title: 'Second Object',
-    description: 'Description of the second object.',
-    image:
-      'https://media.istockphoto.com/id/1151307397/vector/flat-cartoon-character.jpg?s=1024x1024&w=is&k=20&c=qBROYpbloa21JgZODjhjUlgo8SXTXliHfeoO1YrKqkg=',
-  },
-  {
-    id: 3,
-    title: 'Third Object',
-    description: 'Description of the third object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-  {
-    id: 11,
-    title: 'First Object',
-    description: 'Description of the first object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-  {
-    id: 12,
-    title: 'Second Object',
-    description: 'Description of the second object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-  {
-    id: 13,
-    title: 'Third Object',
-    description: 'Description of the third object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-]
 const Home = () => {
+  axios.defaults.baseURL = 'http://localhost:3000/api/'
+
+  const [posts, setPosts] = useState([])
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('/posts')
+        setPosts(res.data)
+      } catch (err) {
+        console.error(err)
+        setError('Failed to fetch posts. Please try again later.')
+      }
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div className="home">
+      {error && <div className="error-message">{error}</div>}
       <div className="post">
-        {post.map(item => (
+        {posts.map(item => (
           <div className="post-item" key={item.id}>
             <Link className="link" to={`/post/${item.id}`}>
               <img className="image" src={item.image} alt="content" />
