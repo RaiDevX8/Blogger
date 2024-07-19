@@ -5,7 +5,7 @@ import {
   getPost,
   getPosts,
   updatePost,
-} from '../controllers/post.js'
+} from '../controllers/post.js' // Ensure the path is correct
 
 const router = express.Router()
 
