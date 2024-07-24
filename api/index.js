@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import authRoutes from './routes/auth.js'
-import postRoutes from './routes/posts.js' // Ensure the path is correct
+import postRoutes from './routes/posts.js'
 
 const app = express()
 
