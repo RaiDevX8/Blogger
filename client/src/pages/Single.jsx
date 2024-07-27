@@ -17,12 +17,13 @@ const navigate =useNavigate();
       const res = await axios.get(`/posts/${postId}`, {
         withCredentials: true,
       }) // Ensure cookies are sent
+      // console.log(res.data)
       setPost(res.data)
     } catch (error) {
       console.error('Error fetching data:', error)
     }
   }
-
+console.log(post.cat,post.image);
   useEffect(() => {
     if (postId) {
       fetchData()
@@ -62,7 +63,8 @@ const navigate =useNavigate();
         <h1>{post.title}</h1>
         <p>{post.content}</p>
       </div>
-      <Menu category={post.cat} />
+
+      <Menu cat={post.cat} />
     </div>
   )
 }

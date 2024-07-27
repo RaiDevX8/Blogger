@@ -1,63 +1,43 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 
-const post = [
-  {
-    id: 1,
-    title: 'First Object',
-    description: 'Description of the first object.',
-    image:
-      'https://media.istockphoto.com/id/1151307397/vector/flat-cartoon-character.jpg?s=1024x1024&w=is&k=20&c=qBROYpbloa21JgZODjhjUlgo8SXTXliHfeoO1YrKqkg=',
-  },
-  {
-    id: 2,
-    title: 'Second Object',
-    description: 'Description of the second object.',
-    image:
-      'https://media.istockphoto.com/id/1151307397/vector/flat-cartoon-character.jpg?s=1024x1024&w=is&k=20&c=qBROYpbloa21JgZODjhjUlgo8SXTXliHfeoO1YrKqkg=',
-  },
-  {
-    id: 3,
-    title: 'Third Object',
-    description: 'Description of the third object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-  {
-    id: 11,
-    title: 'First Object',
-    description: 'Description of the first object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-  {
-    id: 12,
-    title: 'Second Object',
-    description: 'Description of the second object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-  {
-    id: 13,
-    title: 'Third Object',
-    description: 'Description of the third object.',
-    image:
-      'https://media.istockphoto.com/id/1330868115/vector/the-concept-of-a-copywriter-creating-a-blog-the-idea-of-writing-texts-creativity-and.webp?s=1024x1024&w=is&k=20&c=3jWtujreWJGP4MvLqn7RhKAqbvNnJCZwzd3FTbG0Vc4=',
-  },
-]
-const Menu = () => {
+const Menu = ({ cat }) => {
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+console.log(posts);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true) // Start loading
+        const res = await axios.get(`/posts/?cat=${cat}`)
+        setPosts(res.data)
+        console.log(res.data);
+        setLoading(false) // Stop loading
+      } catch (error) {
+        setError('Error fetching posts.')
+        setLoading(false) // Stop loading
+      }
+    }
+
+    if (cat) {
+      fetchData()
+    }
+  }, [cat])
+
   return (
     <div className="menu">
-      <h1>other post you may like</h1>
-    {post.map((item,index)=>
-    {
-      return(
+      <h1>Other posts you may like</h1>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {posts.length === 0 && !loading && !error && <p>No posts found.</p>}
+      {posts.map(item => (
         <div className="post" key={item.id}>
-          <img src={item.image} alt="image" />
+          <img src={item.image} alt={item.title} />
           <h2>{item.title}</h2>
-          <button>read more!</button>
+          <button>Read more!</button>
         </div>
-      )
-    })}
+      ))}
     </div>
   )
 }
