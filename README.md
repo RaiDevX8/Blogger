@@ -15,7 +15,7 @@
 
 <h2>Tech Stack</h2>
 <ul>
-    <li><strong>Frontend:</strong> React, JavaScript, HTML, CSS</li>
+    <li><strong>Frontend:</strong> React</li>
     <li><strong>Backend:</strong> Node.js, Express.js, MYSQL </li>
     <li><strong>State Management:</strong> React Hooks, Context API</li>
     <li><strong>Authentication:</strong> JWT (JSON Web Tokens)</li>
