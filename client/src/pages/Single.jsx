@@ -1,69 +1,75 @@
+import React, { useEffect, useState } from 'react'
+
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Menu from '../components/Menu'
 import axios from 'axios'
 import moment from 'moment'
-import React, { useContext, useEffect, useState } from 'react'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import Menu from '../components/Menu'
+import { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
-
+import DOMPurify from 'dompurify'
+// import f from ''
 const Single = () => {
   const [post, setPost] = useState({})
+
   const location = useLocation()
+  const navigate = useNavigate()
+
   const postId = location.pathname.split('/')[2]
+
   const { currentUser } = useContext(AuthContext)
-const navigate =useNavigate();
-  const fetchData = async () => {
-    try {
-      console.log(`Fetching data for postId: ${postId}`)
-      const res = await axios.get(`/posts/${postId}`, {
-        withCredentials: true,
-      }) // Ensure cookies are sent
-      // console.log(res.data)
-      setPost(res.data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
-console.log(post.cat,post.image);
+
   useEffect(() => {
-    if (postId) {
-      fetchData()
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/posts/${postId}`)
+        setPost(res.data)
+      } catch (err) {
+        console.log(err)
+      }
     }
+    fetchData()
   }, [postId])
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/posts/${postId}`, { withCredentials: true }) // Ensure cookies are sent
+      await axios.delete(`/posts/${postId}`)
       navigate('/')
-    } catch (error) {
-      console.error('Delete failed:', error)
+    } catch (err) {
+      console.log(err)
     }
+  }
+
+  const getText = html => {
+    const doc = new DOMParser().parseFromString(html, 'text/html')
+    return doc.body.textContent
   }
 
   return (
     <div className="single">
       <div className="content">
-        <img src={post?.image} alt="" />
+        <img src={`../../uploads/${post?.img}`} alt="" />
         <div className="user">
-          <img src={post?.userImg} alt="" />
+          {post.userImg && <img src={post.userImg} alt="" />}
           <div className="info">
-            <span>{post?.username}</span>
-            <p>Posted {moment(post.date_posted).fromNow()}</p>
+            <span>{post.username}</span>
+            <p>Posted {moment(post.date).fromNow()}</p>
           </div>
-          {currentUser?.username === post?.username && (
+          {currentUser.username === post.username && (
             <div className="edit">
-              <Link to={`/write?edit=2`}>
-                <h3>Edit</h3>
+              <Link to={`/write?edit=2`} state={post}>
+                <span>edit</span>
               </Link>
-              <Link>
-                <h3 onClick={handleDelete}>Delete</h3>
-              </Link>
+              <span onClick={handleDelete}>delete</span>
             </div>
           )}
         </div>
         <h1>{post.title}</h1>
-        <p>{post.content}</p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(post.desc),
+          }}
+        ></p>{' '}
       </div>
-
       <Menu cat={post.cat} />
     </div>
   )

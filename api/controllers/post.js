@@ -1,5 +1,4 @@
 import { db } from '../db.js'
-import jwt from 'jsonwebtoken'
 
 // Get all posts or posts by category
 export const getPosts = (req, res) => {
@@ -8,7 +7,10 @@ export const getPosts = (req, res) => {
     : 'SELECT * FROM post'
 
   db.query(q, [req.query.cat], (err, data) => {
-    if (err) return res.status(500).send(err)
+    if (err) {
+      console.error('Database query error: ', err)
+      return res.status(500).json(err)
+    }
     return res.status(200).json(data)
   })
 }
@@ -16,97 +18,90 @@ export const getPosts = (req, res) => {
 // Get a single post by ID
 export const getPost = (req, res) => {
   const q = `
-    SELECT p.id, u.username, p.title, p.content, p.image, p.date_posted , p.cat
+    SELECT p.id, u.username, p.title, p.content, p.image, p.date_posted, p.cat
     FROM user u
     JOIN post p ON u.id = p.user_id
     WHERE p.id = ?
   `
 
   db.query(q, [req.params.id], (err, data) => {
-    if (err) return res.status(500).json(err)
+    if (err) {
+      console.error('Database query error: ', err)
+      return res.status(500).json(err)
+    }
     return res.status(200).json(data[0])
   })
 }
-
-// Add a new post
 export const addPost = (req, res) => {
-  const token = req.cookies.access_token
-  if (!token) return res.status(401).json('Not authenticated!')
+  const { title, content, image, cat, date_posted, user_id } = req.body
 
-  jwt.verify(token, 'jwtkey', (err, userInfo) => {
-    if (err) return res.status(403).json('Token is not valid!')
+  // Validate that required fields are not null or undefined
+  if (!title || !content || !date_posted || !user_id) {
+    return res
+      .status(400)
+      .json('Title, content, date_posted, and user_id are required.')
+  }
 
-    const q =
-      'INSERT INTO post(title, content, image, cat, date_posted, user_id) VALUES (?)'
+  const q =
+    'INSERT INTO post (title, content, image, cat, date_posted, user_id) VALUES (?)'
+  const values = [title, content, image || '', cat || '', date_posted, user_id]
 
-    const values = [
-      req.body.title,
-      req.body.content,
-      req.body.image,
-      req.body.cat,
-      req.body.date_posted,
-      userInfo.id,
-    ]
-
-    db.query(q, [values], (err, data) => {
-      if (err) return res.status(500).json(err)
-      return res.json('Post has been created.')
-    })
+  db.query(q, [values], (err, data) => {
+    if (err) {
+      console.error('Database query error: ', err)
+      return res.status(500).json(err)
+    }
+    return res.status(201).json('Post has been created.')
   })
 }
+
 
 // Delete a post by ID
 export const deletePost = (req, res) => {
   const postId = req.params.id
-  const token = req.cookies.access_token
+  const userId = req.body.user_id // Assuming user_id is sent in the request body
 
-  if (!token) return res.status(401).json('Not authenticated!')
+  const q = 'DELETE FROM post WHERE id = ? AND user_id = ?'
 
-  jwt.verify(token, 'jwtkey', (err, userInfo) => {
-    if (err) return res.status(403).json('Token is not valid!')
-
-    const q = 'DELETE FROM post WHERE id = ? AND user_id = ?'
-
-    db.query(q, [postId, userInfo.id], (err, data) => {
-      if (err) return res.status(500).json(err)
-      if (data.affectedRows === 0)
-        return res
-          .status(404)
-          .json('Post not found or you do not have permission to delete it.')
-      return res.json('Post has been deleted!')
-    })
+  db.query(q, [postId, userId], (err, data) => {
+    if (err) {
+      console.error('Database query error: ', err)
+      return res.status(500).json(err)
+    }
+    if (data.affectedRows === 0)
+      return res
+        .status(404)
+        .json('Post not found or you do not have permission to delete it.')
+    return res.json('Post has been deleted.')
   })
 }
 
 // Update a post by ID
 export const updatePost = (req, res) => {
   const postId = req.params.id
-  const token = req.cookies.access_token
+  const userId = req.body.user_id // Assuming user_id is sent in the request body
 
-  if (!token) return res.status(401).json('Not authenticated!')
+  const q =
+    'UPDATE post SET title = ?, content = ?, image = ?, cat = ? WHERE id = ? AND user_id = ?'
+  const values = [
+    req.body.title,
+    req.body.content,
+    req.body.image,
+    req.body.cat,
+    postId,
+    userId,
+  ]
 
-  jwt.verify(token, 'jwtkey', (err, userInfo) => {
-    if (err) return res.status(403).json('Token is not valid!')
-
-    const q =
-      'UPDATE post SET title = ?, content = ?, image = ?, cat = ? WHERE id = ? AND user_id = ?'
-
-    const values = [
-      req.body.title,
-      req.body.content,
-      req.body.image,
-      req.body.cat,
-      postId,
-      userInfo.id,
-    ]
-
-    db.query(q, values, (err, data) => {
-      if (err) return res.status(500).json(err)
-      if (data.affectedRows === 0)
-        return res
-          .status(404)
-          .json('Post not found or you do not have permission to update it.')
-      return res.json('Post has been updated.')
-    })
+  db.query(q, values, (err, data) => {
+    if (err) {
+      console.error('Database query error: ', err)
+      return res.status(500).json(err)
+    }
+    if (data.affectedRows === 0)
+      return res
+        .status(404)
+        .json('Post not found or you do not have permission to update it.')
+    return res.json('Post has been updated.')
   })
 }
+

@@ -2,10 +2,11 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 const Menu = ({ cat }) => {
+  // console.log(cat);
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-console.log(posts);
+// console.log(cat);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,9 +21,9 @@ console.log(posts);
       }
     }
 
-    if (cat) {
+
       fetchData()
-    }
+
   }, [cat])
 
   return (
