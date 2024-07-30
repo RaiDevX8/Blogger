@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useState, useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Menu from '../components/Menu'
 import axios from 'axios'
 import moment from 'moment'
-import { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import DOMPurify from 'dompurify'
-// import f from ''
+
 const Single = () => {
   const [post, setPost] = useState({})
-
   const location = useLocation()
   const navigate = useNavigate()
-
   const postId = location.pathname.split('/')[2]
-
   const { currentUser } = useContext(AuthContext)
 
   useEffect(() => {
@@ -47,12 +42,13 @@ const Single = () => {
   return (
     <div className="single">
       <div className="content">
-        <img src={`../../uploads/${post?.img}`} alt="" />
+        {/* Ensure the correct path */}
+        <img src={`/uploads/${post?.image}`} alt={post.title} />
         <div className="user">
-          {post.userImg && <img src={post.userImg} alt="" />}
+          {post.userImg && <img src={post.userImg} alt={post.username} />}
           <div className="info">
             <span>{post.username}</span>
-            <p>Posted {moment(post.date).fromNow()}</p>
+            <p>Posted {moment(post.date_posted).fromNow()}</p>
           </div>
           {currentUser.username === post.username && (
             <div className="edit">
@@ -66,9 +62,9 @@ const Single = () => {
         <h1>{post.title}</h1>
         <p
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(post.desc),
+            __html: DOMPurify.sanitize(post.content),
           }}
-        ></p>{' '}
+        ></p>
       </div>
       <Menu cat={post.cat} />
     </div>

@@ -7,47 +7,71 @@ import moment from 'moment'
 
 const Write = () => {
   const state = useLocation().state
-  const [value, setValue] = useState(state?.title || '')
-  const [title, setTitle] = useState(state?.desc || '')
+  const [value, setValue] = useState(state?.content || '')
+  const [title, setTitle] = useState(state?.title || '')
   const [file, setFile] = useState(null)
   const [cat, setCat] = useState(state?.cat || '')
-
   const navigate = useNavigate()
+  const user_id = 1 // Replace with actual user_id, e.g., from auth context/session
 
   const upload = async () => {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const res = await axios.post('http://localhost:3000/api/upload', formData) // Correct the URL here
+      const res = await axios.post(
+        'http://localhost:3000/api/upload',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      )
       return res.data.filename
     } catch (err) {
       console.error('File upload error: ', err)
+      return null
     }
   }
 
   const handleSubmit = async () => {
-    // Ensure that content is not empty or null
-    if (!title || !content || !date_posted || !user_id) {
-      console.error('Title, content, date_posted, and user_id are required.')
+    const date_posted = moment().format('YYYY-MM-DD HH:mm:ss')
+
+    if (!title || !value || !cat || !user_id) {
+      console.error(
+        'Title, content, category, user_id, and date_posted are required.'
+      )
       return
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/posts', {
+      const image = file ? await upload() : null
+      const postData = {
         title,
-        content,
-        image, // Optional field
-        cat, // Optional field
-       
+        content: value,
+        image,
+        cat,
         user_id,
-      })
+        date_posted,
+      }
 
-      console.log(response.data)
+      // console.log('Submitting post:', postData) // Log the payload
+
+      const response = await axios.post(
+        'http://localhost:3000/api/posts',
+        postData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+
+      // console.log('Post submitted successfully:', response.data)
+      navigate('/') // Redirect to the posts page after successful submission
     } catch (error) {
-      console.error('Post submission error: ', error)
+      console.error(
+        'Post submission error:',
+        error.response ? error.response.data : error.message
+      )
     }
   }
-
 
   return (
     <div className="add">
@@ -56,7 +80,7 @@ const Write = () => {
           type="text"
           placeholder="Title"
           onChange={e => setTitle(e.target.value)}
-          value={title} // Ensure input value is controlled
+          value={title}
         />
         <div className="editorContainer">
           <ReactQuill
@@ -86,8 +110,10 @@ const Write = () => {
             Upload Image
           </label>
           <div className="buttons">
-            <button>Save as a draft</button>
-            <button onClick={handleClick}>Publish</button>
+            <button onClick={() => console.log('Save as a draft')}>
+              Save as a draft
+            </button>
+            <button onClick={handleSubmit}>Publish</button>
           </div>
         </div>
         <div className="item">

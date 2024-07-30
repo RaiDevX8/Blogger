@@ -21,7 +21,7 @@ const Home = () => {
 
     fetchData()
   }, [])
-
+  // console.log(posts)
   return (
     <div className="home">
       {error && <div className="error-message">{error}</div>}
@@ -29,7 +29,11 @@ const Home = () => {
         {posts.map(item => (
           <div className="post-item" key={item.id}>
             <Link className="link" to={`/post/${item.id}`}>
-              <img className="image" src={item.image} alt="content" />
+              <img
+                className="image"
+                src={`/uploads/${item.image}`}
+                alt="content"
+              />
             </Link>
             <div className="content">
               <Link className="link" to={`/post/${item.id}`}>

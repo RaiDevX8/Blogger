@@ -34,7 +34,7 @@ const Menu = ({ cat }) => {
       {posts.length === 0 && !loading && !error && <p>No posts found.</p>}
       {posts.map(item => (
         <div className="post" key={item.id}>
-          <img src={item.image} alt={item.title} />
+          <img src={`/uploads/${item.image}`} alt={item.title} />
           <h2>{item.title}</h2>
           <button>Read more!</button>
         </div>

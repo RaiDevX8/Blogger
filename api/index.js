@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import multer from 'multer'
 import authRoutes from './routes/auth.js'
 import postRoutes from './routes/posts.js'
-
+// import pos from '../client/uploads/'
 const app = express()
 
 // CORS configuration
@@ -20,7 +20,7 @@ app.use('/uploads', express.static('uploads'))
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/') // Ensure this directory exists
+    cb(null,'../client/uploads/') // Ensure this directory exists
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname) // Ensure unique filenames
