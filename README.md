@@ -1,6 +1,6 @@
 
 
-<h1>Blogger Website</h1>
+<h1>Blogger  Website</h1>
 
 <p>This project is a blogging platform built using React for the frontend and a SQL database for the backend. The application allows users to create, edit, and delete blog posts, as well as view and comment on posts by other users. It features a clean and intuitive user interface, with seamless navigation and real-time updates. The backend utilizes SQL for efficient data management and storage.</p>
 
