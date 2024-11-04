@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
+import { AuthContextType } from '../types'
 // import Logo from '../img/logo.png'
 
-const Navbar = () => {
-  const { currentUser, logout } = useContext(AuthContext)
+const Navbar : React.FC = () => {
+  const { currentUser, logout } = useContext(AuthContext) as AuthContextType
 
   return (
     <div className="navbar">
