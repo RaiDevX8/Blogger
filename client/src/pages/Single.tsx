@@ -1,4 +1,3 @@
-// Single.tsx
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Menu from '../components/Menu';
@@ -6,10 +5,10 @@ import axios from 'axios';
 import moment from 'moment';
 import { AuthContext } from '../context/AuthContext';
 import DOMPurify from 'dompurify';
-import { Post } from '../types'; // Adjust the path as necessary
+import { Post } from '../types'; 
 
 const Single: React.FC = () => {
-  const [post, setPost] = useState<Post | null>(null); // Change to Post type
+  const [post, setPost] = useState<Post | null>(null); 
   const location = useLocation();
   const navigate = useNavigate();
   const postId = location.pathname.split('/')[2];
@@ -18,7 +17,7 @@ const Single: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get<Post>(`/posts/${postId}`); // Specify Post type
+        const res = await axios.get<Post>(`/posts/${postId}`); 
         setPost(res.data);
       } catch (err) {
         console.log(err);
